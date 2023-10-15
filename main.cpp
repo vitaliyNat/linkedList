@@ -37,10 +37,6 @@ public:
             cout<< "This node is NULL"<<endl;
         }
     }
-
-
-
-
 };
 
 
@@ -97,8 +93,6 @@ public:
         newNode->setId(this->idQty);
         this->idQty++;
         this->size++;
-
-
     }
 
     void push_tail(T value) {
@@ -135,7 +129,6 @@ public:
         delete this->tail->next;
         this->tail->next = nullptr;
         this->size--;
-
     }
 
     void deleteFirst() {
@@ -154,7 +147,6 @@ public:
         } else {
             cout << "Failed: invalid value" << endl;
         }
-
     }
 
     void deleteNodeIndex(int index) {
@@ -163,7 +155,6 @@ public:
             this->index(index)->prev->next = this->index(index)->next;
             this->size--;
             cout << "Success" << endl;
-
         } else {
             cout << "Failed: invalid value" << endl;
         }
@@ -177,7 +168,6 @@ public:
                 return tmp;
             }
             tmp = tmp->next;
-
         }
         return nullptr;
     }
@@ -218,44 +208,38 @@ public:
     }
 
     void orderedInsert(T value) {
-
         if(!size){
             add_begin(value);
             return;
         }
 
-
         Node<T> *tmp = this->head;
-
-
-
         if (compare(this->head->data, value) >= 1) {
             this->add_begin(value);
             return;
         }
         auto *newNode = new Node(value);
         while(true){
-        if (compare(tmp->data, value) >= 0) {
-            newNode->prev = tmp->prev;
-            auto tmp1 = tmp->prev;
-            newNode->next = tmp;
-            tmp->prev = newNode;
-            tmp1->next = newNode;
-            this->size++;
-            newNode->setId(this->idQty);
-            this->idQty++;
-            return;
-        }else{
-            if(tmp->next){
-                tmp = tmp->next;
-            }else{
-                this->push_tail(value);
+            if (compare(tmp->data, value) >= 0) {
+                newNode->prev = tmp->prev;
+                auto tmp1 = tmp->prev;
+                newNode->next = tmp;
+                tmp->prev = newNode;
+                tmp1->next = newNode;
+                this->size++;
+                newNode->setId(this->idQty);
+                this->idQty++;
                 return;
+            }else{
+            if(tmp->next){
+                    tmp = tmp->next;
+                }else{
+                    this->push_tail(value);
+                    return;
+                }
             }
-
-        }}
-
-    };
+        }
+    }
 };
 
 template <class T>
@@ -279,6 +263,20 @@ int main() {
         clock_t t2 = clock();
     double duration = double(t2-t1)/CLOCKS_PER_SEC;
     cout << duration;
+
+
+
+
+    t1 = clock();
+
+    t2 = clock();
+    duration = double(t2-t1)/CLOCKS_PER_SEC;
+    cout << duration;
+
+
+
+
+
 
 //    cout<< first->getHead()->data<<endl;
 //    first->searchNode(13)->printNode();
