@@ -1,6 +1,7 @@
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
+#include <chrono>
 
 using namespace std;
 
@@ -156,7 +157,7 @@ public:
             this->size--;
             cout << "Success" << endl;
         } else {
-            cout << "Failed: invalid value" << endl;
+            cout << "Failed: invalid index" << endl;
         }
     }
 
@@ -242,8 +243,10 @@ public:
     }
 };
 
+
 template <class T>
  T getRandom(){
+    srand(time(0));
     return rand() % 1000;
  }
 
@@ -251,47 +254,114 @@ template <class T>
 
 int main() {
     auto * first = new linkedList<int>();
-    int Qty = 1000;
-    //first->add_begin(getRandom<int>());
+    const int Qty = 1000;
 
-    clock_t t1 = clock();
 
-    for(int i = 0; i<61; i++) {
-        first->orderedInsert(getRandom<int>());
+
+    //Add begin
+   auto t1 = chrono::high_resolution_clock::now();
+
+
+    for(int i = 0; i<Qty; i++) {
+        first->add_begin(getRandom<int>());
     }
-    first->printList();
-        clock_t t2 = clock();
-    double duration = double(t2-t1)/CLOCKS_PER_SEC;
-    cout << duration;
+
+   auto t2 = chrono::high_resolution_clock::now();
+   auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1);
+   printf("Add begin %d elements: Time measured: %.3d nanoseconds.\n",Qty, duration.count());
+
+    first->clearList();
+
+    //Add end
+     t1 = chrono::high_resolution_clock::now();
 
 
+    for(int i = 0; i<Qty; i++) {
+        first->push_tail(getRandom<int>());
+    }
+
+     t2 = chrono::high_resolution_clock::now();
+     duration = std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1);
+    printf("Add end %d elements: Time measured: %.3d nanoseconds.\n",Qty, duration.count());
+
+    first->clearList();
 
 
-    t1 = clock();
-
-    t2 = clock();
-    duration = double(t2-t1)/CLOCKS_PER_SEC;
-    cout << duration;
-
-
-
-
-
-
-//    cout<< first->getHead()->data<<endl;
-//    first->searchNode(13)->printNode();
-//    cout<<first->getSize() << endl;
-//    first->deleteNodeValue(14);
-//    cout<<endl;
-//    first->index(11)->printNode();
-    //first->clearList();
+    //Add ordered
+//    t1 = chrono::high_resolution_clock::now();
 //
-//    cout<<endl;
 //
-//    cout<<endl;
-//    first->deleteNodeValue(145);
-//    first->orderedInsert(505);
+//    for(int i = 0; i<Qty; i++) {
+//        first->orderedInsert(getRandom<int>());
+//    }
 //
-//    first->printList();
+//    t2 = chrono::high_resolution_clock::now();
+//    duration = std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1);
+//    printf("Add ordered %d elements: Time measured: %.3d nanoseconds.\n",Qty, duration.count());
+
+
+
+
+    //Search random element by intdex
+    t1 = chrono::high_resolution_clock::now();
+
+
+    first->index(getRandom<int>());
+
+    t2 = chrono::high_resolution_clock::now();
+    duration = std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1);
+    printf("Search random element by index in %d elements: Time measured: %.3d nanoseconds.\n",Qty, duration.count());
+
+
+    //Search random element and delete by index
+    t1 = chrono::high_resolution_clock::now();
+
+
+    first->deleteNodeIndex(getRandom<int>());
+
+    t2 = chrono::high_resolution_clock::now();
+    duration = std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1);
+    printf("Search random element by index and delete in %d elements: Time measured: %.3d nanoseconds.\n",Qty, duration.count());
+
+
+    //Search random element  by value
+    t1 = chrono::high_resolution_clock::now();
+
+
+    first->searchNode(getRandom<int>());
+
+
+    t2 = chrono::high_resolution_clock::now();
+    duration = std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1);
+    printf("Search random element by value in  %d elements: Time measured: %.3d nanoseconds.\n",Qty, duration.count());
+
+   //Search random element and delete  by value
+    t1 = chrono::high_resolution_clock::now();
+
+
+    first->deleteNodeValue(getRandom<int>());
+
+
+    t2 = chrono::high_resolution_clock::now();
+    duration = std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1);
+    printf("Search and delete random element by value in  %d elements: Time measured: %.3d nanoseconds.\n",Qty, duration.count());
+
+
+    //clear list
+    t1 = chrono::high_resolution_clock::now();
+
+
+    first->clearList();
+
+
+    t2 = chrono::high_resolution_clock::now();
+    duration = std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1);
+    printf("Clear list  %d elements: Time measured: %.3d nanoseconds.\n",Qty, duration.count());
+
+
+
+
+
+
     return 0;
 }
